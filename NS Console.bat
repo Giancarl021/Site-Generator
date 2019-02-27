@@ -1,0 +1,1 @@
+start "NS Console" cmd /k "color 0E & echo [NS Console] & echo. & @echo off"
