@@ -22,9 +22,37 @@ int main(int argc, char *argv[]) {
 	
 	// get args from console
 	
-	int n = 0, pn = -1;
-	bool tmp = sub;
-	for(int i = 0; i < argc; i++) { // search for commands in all the args passed
+	int n = 0, pn = -1, i = 1;
+	bool tmp = sub, intHTML = true;
+	char *presetHTML = "presets\\preset.html", *presetCSS = "presets\\preset.css", *presetJS = "presets\\preset.js";
+	
+	// testing if some file has been dropped in the exe file
+	
+	FILE *tmpFILE = fopen(argv[1], "r");
+	
+	if(tmpFILE != NULL) {
+		if(argv[1] != NULL) {
+			if(strstr(argv[1], ".html") != NULL) {
+				FILE *tmpF = fopen(argv[1], "r");
+				presetHTML = argv[1]; // changing adress to the preset file
+				i = 2;
+				intHTML = false;
+			}
+			if(strstr(argv[1], ".css") != NULL) {
+				presetCSS = argv[1];
+				i = 2;
+			}
+			if(strstr(argv[1], ".js") != NULL) {
+				presetJS = argv[1];
+				i = 2;	
+			}
+		}	
+	}
+	fclose(tmpFILE);
+	
+	// get other args
+	
+	for(; i < argc; i++) { // search for commands in all the args passed
 		if(strstr(argv[i], "#") != NULL && strlen(argv[i]) > 1) { // if the arg in index i hava a "#" and after "#" have some text, then stop picking "-add" references and save the position of the arg with the folder name
 			tmp = false;
 			pn = i;
@@ -83,9 +111,9 @@ int main(int argc, char *argv[]) {
 		
 	// create and write files
 	
-	writeFile(bf, "\\index.html", "presets\\preset.html", true); // the HTML its the unique file with a break into to put frameworks based on args
-	writeFile(bf, "\\css\\style.css", "presets\\preset.css", false);
-	writeFile(bf, "\\js\\script.js", "presets\\preset.js", false);
+	writeFile(bf, "\\index.html", presetHTML, intHTML); // the HTML its the unique file with a break into to put frameworks based on args
+	writeFile(bf, "\\css\\style.css", presetCSS, false);
+	writeFile(bf, "\\js\\script.js", presetJS, false);
 	
  	
 	printf("Arquivos gerados...\n");
