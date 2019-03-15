@@ -22,9 +22,9 @@ int main(int argc, char *argv[]) {
 	
 	// get args from console
 	
-	int n = 0, pn = -1, i = 1;
+	int n = 0, pn = -1, i = 1, posHTML = 0;
 	bool tmp = sub, intHTML = true;
-	char *presetHTML = "presets\\preset.html", *presetCSS = "presets\\preset.css", *presetJS = "presets\\preset.js";
+	char *presetHTML[] = {"presets\\preset.html", "presets\\preset.php"}, *presetCSS = "presets\\preset.css", *presetJS = "presets\\preset.js", *destHTML[] = {"\\index.html", "\\index.php"};
 	
 	// testing if some file has been dropped in the exe file
 	
@@ -33,16 +33,21 @@ int main(int argc, char *argv[]) {
 	if(tmpFILE != NULL) {
 		if(argv[1] != NULL) {
 			if(strstr(argv[1], ".html") != NULL) {
-				FILE *tmpF = fopen(argv[1], "r");
-				presetHTML = argv[1]; // changing adress to the preset file
+				presetHTML[0] = argv[1]; // changing adress to the preset file
 				i = 2;
 				intHTML = false;
 			}
-			if(strstr(argv[1], ".css") != NULL) {
+			else if(strstr(argv[1], ".php") != NULL) {
+				presetHTML[1] = argv[1];
+				i = 2;
+				posHTML = 1;
+				intHTML = false;
+			}
+			else if(strstr(argv[1], ".css") != NULL) {
 				presetCSS = argv[1];
 				i = 2;
 			}
-			if(strstr(argv[1], ".js") != NULL) {
+			else if(strstr(argv[1], ".js") != NULL) {
 				presetJS = argv[1];
 				i = 2;	
 			}
@@ -65,6 +70,9 @@ int main(int argc, char *argv[]) {
 				system("start presets");
 				printf("Abrindo pasta de configurações e presets...\n");
 				return 0;
+			}
+			else if(strcmp(argv[i], "-php") == 0) {
+				posHTML = 1;
 			}
 		}
 		else if(tmp) { // if "-add" command its active, pick the args to import the frameworks later on HTML file
@@ -111,7 +119,7 @@ int main(int argc, char *argv[]) {
 		
 	// create and write files
 	
-	writeFile(bf, "\\index.html", presetHTML, intHTML); // the HTML its the unique file with a break into to put frameworks based on args
+	writeFile(bf, destHTML[posHTML], presetHTML[posHTML], intHTML); // the HTML its the unique file with a break into to put frameworks based on args
 	writeFile(bf, "\\css\\style.css", presetCSS, false);
 	writeFile(bf, "\\js\\script.js", presetJS, false);
 	
@@ -179,7 +187,7 @@ void writeFile(char *mainfolder, char *destination, char *origin, bool interrupt
 			}
 			fprintf(dst, "<!-- PRESET BY GIANCARL021 -->"); // prints the "watermark" (just for dont leave a clean line in the miidle of the <head> tag)
 		}
-		else if(ch == '@' && !lock && interrupt) { // if doesnt have founded a "@" yet, this cahracter as a "@" and this file its a interrupt order (only HTML), put the watermark
+		else if(ch == '@' && !lock && interrupt) { // if doesnt have founded a "@" yet, this cahracter as a "@" and this file have a interrupt order (only HTML), put the watermark
 			lock = true;
 			fprintf(dst, "<!-- PRESET BY GIANCARL021 -->");
 		}
