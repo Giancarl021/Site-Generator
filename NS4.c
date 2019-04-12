@@ -6,10 +6,14 @@
 #include <windows.h>
 #include <locale.h>
 
-char add[256][256] = {NULL}; // the args with frameworks to add in the HTML
+typedef int bool;
+enum {false, true};
+
+char date[12];
+char add[256][256]; // the args with frameworks to add in the HTML
 bool sub = false; // if the args have any framework to add in the HTML
 
-char* getDate(void); // get Date with String format YYYY-MM-DD
+void setDate(void); // get Date with String format YYYY-MM-DD
 char* formatDate(int x); // put a zero before a DD or MM if the number is less than 10
 void createFolder(char *mainfolder, char *name); // create folder using mkdir (cmd) with master folder afress (fd) + path or only master folder adress (to create it)
 void writeFile(char *mainfolder, char *destination, char *origin, bool interrupt); // create and write a file, in the master folder adress (fd) + path (destination) from another file (origin), if the file needs a edit based on args, the interrupt needs to be true
@@ -71,6 +75,9 @@ int main(int argc, char *argv[]) {
 				printf("Abrindo pasta de configurações e presets...\n");
 				return 0;
 			}
+			else if(strcmp(argv[i], "-html") == 0) {
+				posHTML = 0;
+			}
 			else if(strcmp(argv[i], "-php") == 0) {
 				posHTML = 1;
 			}
@@ -82,8 +89,10 @@ int main(int argc, char *argv[]) {
 	
 	// set folder name
 	
-	char *fd = (pn == -1) ? getDate() : (++argv[pn]); // the folder name recieves the actual date (if none arg have "#" with the folder name) or the folder name recieved in args (the "++" before the name of folder its to remove the "#" to the first pointer of the argv[pn] and puts on the next letter) 
-	char bf[256] = {NULL};
+	setDate();
+	
+	char *fd = (pn == -1) ? date : (++argv[pn]); // the folder name recieves the actual date (if none arg have "#" with the folder name) or the folder name recieved in args (the "++" before the name of folder its to remove the "#" to the first pointer of the argv[pn] and puts on the next letter) 
+	char bf[256];
 	
 	// verification
 	
@@ -112,7 +121,7 @@ int main(int argc, char *argv[]) {
 	strcpy(bf, fd);
 	
 	createFolder(bf, "");
-	_sleep(100); // a delay to give Windows time to create the folder and the other commands works
+	Sleep(100); // a delay to give Windows time to create the folder and the other commands works
 	createFolder(bf, "\\css");
 	createFolder(bf, "\\js");
 	createFolder(bf, "\\img");
@@ -130,18 +139,19 @@ int main(int argc, char *argv[]) {
 
 // exclusive functions
 
-char* getDate(void) {
+void setDate(void) {
 	time_t t = time(NULL);	 // create struct time_t to get current time
 	struct tm tm = *localtime(&t); // create tm struct to organize the time_t struct
-	char c[12] = {NULL};
+	char c[12];
 	snprintf(c, 12, "%d-%s-", tm.tm_year + 1900, formatDate(tm.tm_mon + 1)); // prints on "c" string year and month in format YYYY-MM- using "formatDate" function in month ints to put a zero before the number if its less than 10
+	printf("%s", c);
 	strcat(c, formatDate(tm.tm_mday)); // contat only the day (its separated because the three data in "snprintf" will print ")" (no idea why)
-	char *r = c;
-	return r;
+	printf("%s", c);
+	strcpy(date, c);
 }
 
 char* formatDate(int x) {
-	char c[3] = {NULL};
+	char c[3];
 	if(x < 10) snprintf(c, 3, "0%d", x); // prints 0 + x (int) in the "c" string
 	else snprintf(c, 3, "%d", x); //printf only x (int) in the "c" string
 	char *r = c;
@@ -157,7 +167,7 @@ void createFolder(char *mainfolder, char *name) {
 
 void writeFile(char *mainfolder, char *destination, char *origin, bool interrupt) {
 	bool lock = false; // a boolean to avoid the program find another "@" and put the frameworks there too
-	char bf[256] = {NULL};
+	char bf[256];
 	strcpy(bf, mainfolder); // concat the destination adress
 	strcat(bf, destination);
 	FILE *dst = fopen(bf, "w"); // create and open the file in write mode
