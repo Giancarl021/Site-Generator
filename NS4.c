@@ -19,7 +19,7 @@ void createFolder(char *mainfolder, char *name); // create folder using mkdir (c
 void writeFile(char *mainfolder, char *destination, char *origin, bool interrupt); // create and write a file, in the master folder adress (fd) + path (destination) from another file (origin), if the file needs a edit based on args, the interrupt needs to be true
 
 void set_window_visibility(char visibility[]); // A windows function imported (copied) from another library (my lib)
-void die(char message[]); // A exit function imported (copied) and with little modifications from another library (my lib too)
+void die(const char message[]); // A exit function imported (copied) and with little modifications from another library (my lib too)
 
 int main(int argc, char *argv[]) {
 	setlocale(LC_ALL, "");
@@ -221,7 +221,7 @@ void set_window_visibility(char visibility[]) {
 	}
 }
 
-void die(char message[]) {
+void die(const char message[]) {
 	system("title Alerta de Erro");
 	char *c;
 	printf("%s", message);
