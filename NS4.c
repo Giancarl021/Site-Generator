@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 			}
 			else if(strcmp(argv[i], "-presets") == 0 || strcmp(argv[i], "-config") == 0) { // if the arg in index i its a "-preset" or "-config" command, then close the program and open the "presets" folder
 				system("start presets");
-				printf("Abrindo pasta de configurações e presets...\n");
+				printf("Abrindo pasta de configuraï¿½ï¿½es e presets...\n");
 				return 0;
 			}
 			else if(strcmp(argv[i], "-html") == 0) {
@@ -109,25 +109,25 @@ int main(int argc, char *argv[]) {
 	DIR *def = opendir(presetFolder); // presets folder exists
 	closedir(def);
 	if(!def) {	
-		die("Pasta de configuração corrompida ou inexistente...\n");
+		die("Pasta de configuraï¿½ï¿½o corrompida ou inexistente...\n");
 	} else { // defect if all the preset files exists
 		FILE *fBf = fopen(presetHTML[0], "r");
 		fclose(fBf);
-		if(fBf == NULL) die("Arquivos de configuração corrompidos ou inexistentes...\n");
+		if(fBf == NULL) die("Arquivos de configuraï¿½ï¿½o corrompidos ou inexistentes...\n");
 		fBf = fopen(presetHTML[1], "r");
 		fclose(fBf);
-		if(fBf == NULL) die("Arquivos de configuração corrompidos ou inexistentes...\n");
+		if(fBf == NULL) die("Arquivos de configuraï¿½ï¿½o corrompidos ou inexistentes...\n");
 		fBf = fopen(presetCSS, "r");
 		fclose(fBf);
-		if(fBf == NULL) die("Arquivos de configuração corrompidos ou inexistentes...\n");
+		if(fBf == NULL) die("Arquivos de configuraï¿½ï¿½o corrompidos ou inexistentes...\n");
 		fBf = fopen(presetJS, "r");
 		fclose(fBf);
-		if(fBf == NULL) die("Arquivos de configuração corrompidos ou inexistentes...\n");
+		if(fBf == NULL) die("Arquivos de configuraï¿½ï¿½o corrompidos ou inexistentes...\n");
 	}
 	
 	DIR *dir = opendir(fd); // destination folder already exists
 	closedir(dir);
-	if(dir) die("Pasta base já existe...\n");
+	if(dir) die("Pasta base jï¿½ existe...\n");
 	
 	// create folders
 	
