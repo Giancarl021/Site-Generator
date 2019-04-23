@@ -38,6 +38,8 @@ Os comandos suportados são:
 
     -config / -presets : Abrem a pasta com os presets do site e as referências para importação
 
+    -php : Gera um arquivo index.php ao invés de index.html
+
 ### Comando -add
 
 + Sintaxe:
@@ -99,6 +101,16 @@ Os comandos suportados são:
 
 		</html>
 
+### Comando -php
+
++ Sintaxe:
+
+        -php
+
++ Função:
+    
+    Troca o arquivo gerado de *index.html* para *index.php*, usando para geração do arquivo o *preset.php* no lugar de *preset.html*
+
 ### Comando \#
 
 + Sintaxe:
@@ -131,9 +143,9 @@ Na pasta *presets* há os arquivos usados de base para a criação dos sites e o
 
 Todos os arquivos podem ser modificados, porém **não** podem ser renomeados
 
-O *preset* do HTML exclusivamente usa um **marcador** para carregar as importações ou tags com o comando *-add*, sendo este o caracter "*@*"
+Os *presets* do HTML e do PHP exclusivamente usam um **marcador** para carregar as importações ou tags com o comando *-add*, sendo este o caracter "*@*"
 
-Este caracter só é lido uma vez, sendo assim, se o arquivo não o possuir, o código não realizará as importações. Por outro lado se este estiver presente mas não com o objetivo de importação, será necessário acrescentar outro acima para evitar a desformação ou quebra do código
+Este caracter só é lido uma vez, sendo assim, se o arquivo não o possuir, o código não realizará as importações. Por outro lado se este estiver presente mas não com o objetivo de importação, será necessário acrescentar outro acima para evitar erros no código
 
 Por padrão o "*@*" está dentro da tag *\<head>*
 
