@@ -28,7 +28,17 @@ int main(int argc, char *argv[]) {
 	
 	int n = 0, pn = -1, i = 1, posHTML = 0;
 	bool tmp = sub, intHTML = true;
-	char *presetHTML[] = {"presets\\preset.html", "presets\\preset.php"}, *presetCSS = "presets\\preset.css", *presetJS = "presets\\preset.js", *destHTML[] = {"\\index.html", "\\index.php"};
+	char *presetHTML[] = {
+			"presets\\preset.html",
+			"presets\\preset.php"
+		 },
+		 *presetCSS = "presets\\preset.css",
+		 *presetJS = "presets\\preset.js",
+		 *presetFolder = "presets",
+		 *destHTML[] = {
+		 	"\\index.html",
+			"\\index.php"
+		 };
 	
 	// testing if some file has been dropped in the exe file
 	
@@ -96,18 +106,21 @@ int main(int argc, char *argv[]) {
 	
 	// verification
 	
-	DIR *def = opendir("presets"); // presets folder exists
+	DIR *def = opendir(presetFolder); // presets folder exists
 	closedir(def);
 	if(!def) {	
 		die("Pasta de configuração corrompida ou inexistente...\n");
 	} else { // defect if all the preset files exists
-		FILE *fBf = fopen("presets\\preset.html", "r");
+		FILE *fBf = fopen(presetHTML[0], "r");
 		fclose(fBf);
 		if(fBf == NULL) die("Arquivos de configuração corrompidos ou inexistentes...\n");
-		fBf = fopen("presets\\preset.css", "r");
+		fBf = fopen(presetHTML[1], "r");
 		fclose(fBf);
 		if(fBf == NULL) die("Arquivos de configuração corrompidos ou inexistentes...\n");
-		fBf = fopen("presets\\preset.js", "r");
+		fBf = fopen(presetCSS, "r");
+		fclose(fBf);
+		if(fBf == NULL) die("Arquivos de configuração corrompidos ou inexistentes...\n");
+		fBf = fopen(presetJS, "r");
 		fclose(fBf);
 		if(fBf == NULL) die("Arquivos de configuração corrompidos ou inexistentes...\n");
 	}
@@ -144,9 +157,7 @@ void setDate(void) {
 	struct tm tm = *localtime(&t); // create tm struct to organize the time_t struct
 	char c[12];
 	snprintf(c, 12, "%d-%s-", tm.tm_year + 1900, formatDate(tm.tm_mon + 1)); // prints on "c" string year and month in format YYYY-MM- using "formatDate" function in month ints to put a zero before the number if its less than 10
-	printf("%s", c);
 	strcat(c, formatDate(tm.tm_mday)); // contat only the day (its separated because the three data in "snprintf" will print ")" (no idea why)
-	printf("%s", c);
 	strcpy(date, c);
 }
 
